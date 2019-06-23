@@ -4,6 +4,9 @@ $computers = Get-Content C:\Temp\Scripts\setuser\computers.txt
 #Define the user
 $user = "user"
 
+#Defines the group
+$group = "Adminstrators"
+
 #Deletes the old csv files so everytime you run the output to csv is fresh and not overlapping
 del C:\temp\Scripts\setuser\success.csv -Recurse
 del C:\temp\Scripts\setuser\failed.csv -Recurse
@@ -23,7 +26,7 @@ foreach ($computer in $computers) {
     $user.UserFlags = 66049
     $user.SetInfo()
     Invoke-Command -ComputerName $computer -ScriptBlock {powershell.exe 
-    Add-LocalGroupMember -Group "Administrators" -Member "$user" }
+    Add-LocalGroupMember -Group $group -Member "$user" }
     #This writes to the console stating the computer was successful and then adds it to the success csv
     Write-Host -ForegroundColor Green "Setuser successful on $computer"
     Add-Content C:\temp\Scripts\setuser\success.csv  "$computer, Success"
